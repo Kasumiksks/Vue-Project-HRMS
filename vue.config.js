@@ -1,9 +1,11 @@
 'use strict'
-const path = require('path')
-const defaultSettings = require('./src/settings.js')
+// 打包时的配置文件
+
+const path = require('path') // 导入path模块
+const defaultSettings = require('./src/settings.js') // 加载配置文件
 
 function resolve(dir) {
-  return path.join(__dirname, dir)
+  return path.join(__dirname, dir) // 将传入的路径变成绝对路径
 }
 
 const name = defaultSettings.title || 'vue Admin Template' // page title
@@ -16,7 +18,7 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 const port = process.env.port || process.env.npm_config_port || 9528 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
-module.exports = {
+module.exports = { // vue-cli 脚手架相关配置
   /**
    * You will need to set publicPath if you plan to deploy your site under a sub path,
    * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
@@ -24,21 +26,26 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
+  /*  publicPath: 设置打包后的静态资源目录可以访问的方式
+    1. '/': 以服务器的方式才能打开里面的静态文件
+    2. './': 可以使用相对路径的方式访问里面的静态文件
+   */
   publicPath: '/',
-  outputDir: 'dist',
-  assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
-  productionSourceMap: false,
+  outputDir: 'dist', // 打包输出目录
+  assetsDir: 'static', // 静态资源的输出目录  静态资源(js,css,img,fonts)的(相对于outputDir)的目录
+  lintOnSave: process.env.NODE_ENV === 'development', // 是否eslint检查
+  productionSourceMap: false, // 关闭map文件
   devServer: {
     port: port,
     open: true,
-    overlay: {
+    overlay: { // eslint检查代码出错或者警告登录是否在浏览器显示
       warnings: false,
       errors: true
-    },
-    before: require('./mock/mock-server.js')
+    }
+    /*     // 在启动服务之前加载mock服务
+    before: require('./mock/mock-server.js') */
   },
-  configureWebpack: {
+  configureWebpack: { // webpack{对象配置}
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
@@ -48,7 +55,7 @@ module.exports = {
       }
     }
   },
-  chainWebpack(config) {
+  chainWebpack(config) { // webpack{函数配置}
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [
       {
