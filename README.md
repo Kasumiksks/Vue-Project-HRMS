@@ -1,3 +1,5 @@
+# Vue-Project-HRMS
+> This is a human resource management system based on the secondary development of vue-Admin-Template project of Domestic [PanJiaChen](https://github.com/PanJiaChen). The following is the original document description:
 # vue-admin-template
 
 English | [简体中文](./README-zh.md)
