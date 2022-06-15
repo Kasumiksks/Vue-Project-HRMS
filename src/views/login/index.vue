@@ -57,7 +57,7 @@
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-      >Login</el-button>
+      >登录</el-button>
 
       <div class="tips">
         <span style="margin-right: 20px">账号: 13800000002</span>
@@ -68,36 +68,31 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+import { validMobile } from '@/utils/validate'
+import { login } from '@/api/user'
 
 export default {
   name: 'Login',
   data() {
     const validateMobile = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+      if (!validMobile(value)) {
+        callback(new Error('请输入正确的手机号'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        mobile: '13800000002',
+        mobile: '13800000004',
         password: '123456'
       },
       loginRules: {
-        username: [
+        mobile: [
           { required: true, trigger: 'blur', validator: validateMobile }
         ],
         password: [
-          { required: true, trigger: 'blur', validator: validatePassword }
+          { required: true, trigger: 'blur', message: '请输入密码' },
+          { pattern: /^[0-9]{6,16}$/, trigger: 'blur', message: '密码至少包含数字和英文，长度6-16位' }
         ]
       },
       loading: false,
@@ -124,22 +119,20 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    async ToLogin() {
+      try {
+        const { data: res } = await login(this.loginForm)
+        console.log('登录成功')
+        console.log(res)
+      } catch (error) {
+        console.log('发送失败,失败原因:' + error)
+      }
+    },
+    handleLogin() { // 表单兜底校验
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          this.loading = true
-          this.$store
-            .dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
+          // 发送请求实现登录
+          this.ToLogin()
         }
       })
     }
@@ -191,7 +184,7 @@ $cursor: #fff;
     border-radius: 5px;
     color: #454545;
     .el-form-item__error {
-      color: #fff;  // 设置错误信息的颜色
+      color: salmon;  // 设置错误信息的颜色
     }
   }
 }
