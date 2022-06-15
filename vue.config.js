@@ -30,7 +30,8 @@ module.exports = { // vue-cli 脚手架相关配置
     1. '/': 以服务器的方式才能打开里面的静态文件
     2. './': 可以使用相对路径的方式访问里面的静态文件
    */
-  publicPath: '/',
+  // 设置静态资源的加载模式, '/'为服务器根路径, './'为相对index.html路径
+  publicPath: process.env.NODE_ENV === 'development' ? '/' : './',
   outputDir: 'dist', // 打包输出目录
   assetsDir: 'static', // 静态资源的输出目录  静态资源(js,css,img,fonts)的(相对于outputDir)的目录
   lintOnSave: process.env.NODE_ENV === 'development', // 是否eslint检查
