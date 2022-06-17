@@ -1,3 +1,39 @@
+import router from './router'
+import store from '@/store'
+import { Message } from 'element-ui'
+import NProgress from 'nprogress' // 进度条
+import 'nprogress/nprogress.css' // 进度条css
+
+router.beforeEach((to, from, next) => {
+  NProgress.start() // 进度条开始
+  console.log(`从${from.path}跳到${to.path}`)
+  const token = store.state.user.token
+  const whiteList = ['/login', '/404'] // 白名单
+  // 如果登录
+  if (token) {
+    if (to.path === '/login') {
+      Message.info('您已登录,跳转到首页')
+      next('/')
+      NProgress.done() // 进度条结束
+    } else {
+      next()
+    }
+  } else { // 没有登录
+    // 判断是否白名单
+    if (whiteList.includes(to.path)) {
+      next()
+    } else {
+      next('/login')
+      NProgress.done()
+    }
+  }
+})
+
+// 页面跳转完成的钩子函数
+router.afterEach(() => {
+  NProgress.done()
+})
+
 // import router from './router'
 // import store from './store'
 // import { Message } from 'element-ui'

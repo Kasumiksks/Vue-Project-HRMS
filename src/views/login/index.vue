@@ -69,7 +69,6 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
-import { login } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -121,13 +120,14 @@ export default {
     },
     async ToLogin() {
       try {
-        const { data: res } = await login(this.loginForm)
         // 调用mutations中的函数,保存token
         // this.$store.commit('模块名/函数名',token)
-        console.log(res)
-        this.$store.commit('user/setToken', res.data)
+        await this.$store.dispatch('user/userLogin', this.loginForm)
+        this.$message.success('登录成功')
+        this.$router.push('/')
       } catch (error) {
-        console.log('发送失败,失败原因:' + error)
+        this.$message.error('登录失败')
+        console.log('发送失败' + error)
       }
     },
     handleLogin() { // 表单兜底校验

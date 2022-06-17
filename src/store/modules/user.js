@@ -1,4 +1,5 @@
 // 引入cookie方法
+import { login } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 export default {
@@ -22,7 +23,15 @@ export default {
     }
   },
   actions: {
-
+    // 实现登录的函数
+    // context 是 store 的实例对象
+    async userLogin(context, formData) {
+      // 发送请求获取token
+      const res = await login(formData)
+      console.log('发送请求成功,获取token')
+      // 将res.data --> token 存储到 vuex 中
+      context.commit('setToken', res.data)
+    }
   }
 }
 // import { login, logout, getInfo } from '@/api/user'
