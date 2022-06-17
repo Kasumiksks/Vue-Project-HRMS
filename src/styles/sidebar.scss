@@ -19,6 +19,7 @@
     left: 0;
     z-index: 1001;
     overflow: hidden;
+    background: -webkit-linear-gradient(bottom, #fbc8df, #7e95dd);  // 大背景渐变
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -66,7 +67,30 @@
       border: none;
       height: 100%;
       width: 100% !important;
-    }
+      a{
+        li{
+          .svg-icon{
+            color: #fff;
+            font-size: 18px;
+            vertical-align: middle;
+            .icon{
+              color:#fff;
+            }
+          }
+          span{
+            color: #fff;
+          }
+          &:hover{
+            .svg-icon{
+              color: #fbc8df
+            }
+            span{
+              color: #fbc8df;
+            }
+          }
+        }
+      }
+}
 
     // menu hover
     .submenu-title-noDropdown,
