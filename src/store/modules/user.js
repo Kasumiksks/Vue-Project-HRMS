@@ -1,10 +1,25 @@
+// 引入cookie方法
+import { getToken, setToken, removeToken } from '@/utils/auth'
+
 export default {
   namespaced: true,
   state: {
-
+    // 本地取一下token
+    token: getToken() || null
   },
   mutations: {
-
+    // 更新token
+    setToken(state, newToken) {
+      state.token = newToken
+      // 本地存储token
+      setToken(newToken)
+    },
+    // 清空token
+    removeToken(state) {
+      state.token = null
+      // 删除本地token
+      removeToken()
+    }
   },
   actions: {
 

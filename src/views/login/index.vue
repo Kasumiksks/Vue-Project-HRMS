@@ -122,8 +122,10 @@ export default {
     async ToLogin() {
       try {
         const { data: res } = await login(this.loginForm)
-        console.log('登录成功')
+        // 调用mutations中的函数,保存token
+        // this.$store.commit('模块名/函数名',token)
         console.log(res)
+        this.$store.commit('user/setToken', res.data)
       } catch (error) {
         console.log('发送失败,失败原因:' + error)
       }

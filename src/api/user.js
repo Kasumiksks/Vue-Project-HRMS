@@ -8,11 +8,20 @@ import request from '@/utils/request'
 export function login(data) {
   return request({
     method: 'post',
-    url: '/api/sys/login',
+    url: '/sys/login',
     data
   })
 }
-export function getInfo(token) {
+
+/**
+ * 获取用户的基本资料
+ * @param {*} token
+ */
+export function getInfo() {
+  return request({
+    method: 'post',
+    url: '/sys/profile'
+  })
 }
 export function logout() {
 }
