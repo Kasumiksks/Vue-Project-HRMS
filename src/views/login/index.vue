@@ -124,7 +124,7 @@ export default {
         // this.$store.commit('模块名/函数名',token)
         await this.$store.dispatch('user/userLogin', this.loginForm)
         this.$message.success('登录成功')
-        this.$router.push('/')
+        this.$router.push(this.$route.query.return_url || '/')
       } catch (error) {
         this.$message.error('登录失败')
         console.log('发送失败' + error)

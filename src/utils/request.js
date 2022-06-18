@@ -23,7 +23,7 @@ service.interceptors.response.use(function(response) {
   // 针对当前项目来说, 这里是错误的响应  data ==> success:false
   console.log(response)
   if (!response.data.success) return Promise.reject(response.data.message)
-  return response
+  return response.data
 }, function(error) {
   return Promise.reject(error) // 对响应错误做些什么
 })

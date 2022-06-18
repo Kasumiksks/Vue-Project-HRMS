@@ -14,8 +14,9 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar">
-          <span class="name">管理员</span>
+          <img v-if="staffPhoto" :src="staffPhoto" class="user-avatar">
+          <img v-else src="@/assets/common/bigUserHeader.png" class="user-avatar">
+          <span class="name">{{ $store.getters.name }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -45,15 +46,27 @@ export default {
     Hamburger
   },
   computed: {
-    ...mapGetters(['sidebar', 'avatar'])
+    // 将getters映射为computed属性
+    ...mapGetters(['sidebar', 'avatar', 'staffPhoto', 'token'])
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    logout() { // 退出登录功能
+      this.$confirm('您将要退出, 是否继续?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        await this.$store.dispatch('user/logout') // 清空token和用户信息
+        // 跳转到登录页, 在地址栏中补充一个查询字符串来指定登陆成功之后要去到的页面
+        this.$router.push('/login?return_url=' + encodeURIComponent(this.$route.fullPath)) // fullPath: 完成解析后的 URL，包含查询参数和hash的完整路径
+      }).catch(err => {
+        console.log(err)
+      })
+      // await this.$store.dispatch('user/logout')
+      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }

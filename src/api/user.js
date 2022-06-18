@@ -23,5 +23,14 @@ export function getInfo() {
     url: '/sys/profile'
   })
 }
+
+// 获取员工的基本信息
+export function getStaffInfo(id) {
+  return request({
+    method: 'get',
+    url: `/sys/user/${id}`
+  })
+}
+
 export function logout() {
 }

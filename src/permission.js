@@ -4,9 +4,9 @@ import { Message } from 'element-ui'
 import NProgress from 'nprogress' // 进度条
 import 'nprogress/nprogress.css' // 进度条css
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   NProgress.start() // 进度条开始
-  console.log(`从${from.path}跳到${to.path}`)
+  // console.log(`从${from.path}跳到${to.path}`)
   const token = store.state.user.token
   const whiteList = ['/login', '/404'] // 白名单
   // 如果登录
@@ -16,6 +16,7 @@ router.beforeEach((to, from, next) => {
       next('/')
       NProgress.done() // 进度条结束
     } else {
+      await store.dispatch('user/getUserInfo')
       next()
     }
   } else { // 没有登录
