@@ -16,7 +16,9 @@ router.beforeEach(async(to, from, next) => {
       next('/')
       NProgress.done() // 进度条结束
     } else {
-      await store.dispatch('user/getUserInfo')
+      if (!store.getters.userId) { // 如果没有userId, 才需要重新请求用户信息
+        await store.dispatch('user/getUserInfo')
+      }
       next()
     }
   } else { // 没有登录
