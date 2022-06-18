@@ -13,6 +13,7 @@
         mode="vertical"
       >
         <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <!--  route: 取出来的一个个路由对象 -->
       </el-menu>
     </el-scrollbar>
   </div>
@@ -31,7 +32,7 @@ export default {
       'sidebar'
     ]),
     routes() {
-      return this.$router.options.routes
+      return this.$router.options.routes // 可以拿到完整的路由表数据(所有的路由规则对象的数组)
     },
     activeMenu() {
       const route = this.$route

@@ -47,8 +47,8 @@ module.exports = { // vue-cli 脚手架相关配置
     proxy: {
       // 如果请求地址以/api打头,就触发代理机制
       '/api': {
-        target: 'http://192.168.81.21:3000' // 代理的真实接口地址
-        // target:'http://ihrm-java.itheima.net'
+        // target: 'http://192.168.81.21:3000' // 代理的真实接口地址
+        target: 'http://ihrm-java.itheima.net'
       }
     }
     /*     // 在启动服务之前加载mock服务
