@@ -22,7 +22,7 @@ service.interceptors.request.use(function(config) {
 service.interceptors.response.use(function(response) {
   // 在发送响应之前做些什么
   // 针对当前项目来说, 这里是错误的响应  data ==> success:false
-  console.log(response)
+  // console.log(response)
 
   // success = false 手动抛出一个错误 ,返回给浏览器
   if (!response.data.success) return Promise.reject(response.data.message)

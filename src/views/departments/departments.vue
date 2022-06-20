@@ -5,7 +5,7 @@
         <!-- 用一个行列布局 -->
         <el-row type="flex" justify="space-between" align="middle" style="height: 40px">
           <el-col :span="20">
-            <svg-icon icon-class="jiahao" /><span>莱莎的炼金工坊</span>
+            <svg-icon icon-class="bumen" /><span>莱莎的炼金工坊</span>
           </el-col>
           <el-col :span="4">
             <el-row type="flex" justify="end">
@@ -44,6 +44,7 @@
               style="height: 40px; width: 100%;"
             >
               <el-col :span="20">
+                <svg-icon icon-class="fenzhi" />&nbsp;
                 <span>{{ data.name }}</span>
               </el-col>
               <el-col :span="4">
@@ -71,14 +72,14 @@
 
       <!-- 实现新增子部门或编辑部门 -->
       <!-- 关闭点击遮罩和按esc关闭对话框的功能 -->
-      <!-- <el-dialog
+      <el-dialog
         title="添加/编辑"
         :visible.sync="bool"
         :close-on-click-modal="false"
         :close-on-press-escape="false"
       >
-        <addor-edit />
-      </el-dialog> -->
+        <addor-edit :id="currentID" @success="hSuccess" />
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -86,17 +87,18 @@
 <script>
 import { getDepartments } from '@/api/departments'
 import { tranListToTreeList } from '@/utils'
-// import AddorEdit from './deptDialog.vue'
+import AddorEdit from './deptDialog.vue'
 export default {
-  // components: {
-  //   AddorEdit
-  // },
+  components: {
+    AddorEdit
+  },
   data() {
     return {
       // 依赖一份树形数据
       // 依赖一份树形数据
       list: [],
-      bool: false
+      bool: false,
+      currentID: null
     }
   },
   created() {
@@ -108,8 +110,9 @@ export default {
       try {
         const res = await getDepartments()
         // shift() 删除数组中的第一个数据, 返回值是删除的数据 , 取出数组中的第一个数据
-        const company = res.data.depts.shift()
-        console.log(company, 'company')
+        // const company = res.data.depts.shift()
+        // console.log(company, 'company')
+        res.data.depts.shift()
         // 将平铺的数据转化为树形结构的数据
         this.list = tranListToTreeList(res.data.depts)
       } catch (error) {
@@ -119,6 +122,14 @@ export default {
     // 点击添加
     hAdd(id) {
       this.bool = true
+      this.currentID = id
+    },
+    // 接受子组件发送过来的添加成功信息
+    hSuccess() {
+      // 关闭弹窗
+      this.bool = false
+      // 重新请求数据
+      this.loadDepartments()
     }
   }
 }

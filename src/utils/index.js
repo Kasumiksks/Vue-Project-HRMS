@@ -123,8 +123,8 @@ export function tranListToTreeList(list) {
     item.children = []
     obj[item.id] = item
   })
-  console.log(list)
-  console.log(obj)
+  // console.log(list)
+  // console.log(obj)
 
   // 遍历数据, 生成最终的树形结构
   const treeList = []

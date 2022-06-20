@@ -38,7 +38,7 @@ export default {
     async userLogin(context, formData) {
       // 发送请求获取token
       const res = await login(formData)
-      console.log('发送请求成功,获取token')
+      // console.log('发送请求成功,获取token')
       // 将res.data --> token 存储到 vuex 中
       context.commit('setToken', res.data)
     },
@@ -46,7 +46,7 @@ export default {
     // 获取用户信息的函数
     async getUserInfo(context) {
       const res = await getInfo()
-      console.log(res.data)
+      // console.log(res.data)
 
       // 获取员工的信息
       const staffInfo = await getStaffInfo(res.data.userId)
