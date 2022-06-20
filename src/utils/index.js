@@ -115,3 +115,30 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+// 将平铺的数据转化为树形结构的数据
+export function tranListToTreeList(list) {
+  const obj = {}
+  list.forEach(item => {
+    item.children = []
+    obj[item.id] = item
+  })
+  console.log(list)
+  console.log(obj)
+
+  // 遍历数据, 生成最终的树形结构
+  const treeList = []
+  list.forEach(item => {
+    // 1. 找关系, 找出正级的对象,如果找到父级对象,将item添加到父级对象的children中
+    // 2. 判断是否是字迹判断对象
+    if (item.pid) {
+      // 子级数据对象, 0C150B46.png数据加入到父级对象parent的children中
+      const parent = obj[item.pid]
+      parent.children.push(item)
+    } else {
+      // 一级的数据对象 , 直接加入到treeList中
+      treeList.push(item)
+    }
+  })
+  return treeList
+}

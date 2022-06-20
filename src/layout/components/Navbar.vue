@@ -6,8 +6,8 @@
       @toggleClick="toggleSideBar"
     />
     <div class="app-breadcrumb">
-      Gwen's tailor's shop
-      <span class="breadBtn">尊享版</span>
+      莱莎的炼金工坊
+      <span class="breadBtn">失落妖精版</span>
     </div>
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 

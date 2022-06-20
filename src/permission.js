@@ -3,12 +3,16 @@ import store from '@/store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // 进度条
 import 'nprogress/nprogress.css' // 进度条css
+import getPageTitle from '@//utils/get-page-title'
 
 router.beforeEach(async(to, from, next) => {
   NProgress.start() // 进度条开始
   // console.log(`从${from.path}跳到${to.path}`)
   const token = store.state.user.token
   const whiteList = ['/login', '/404'] // 白名单
+
+  document.title = getPageTitle(to.meta.title)
+
   // 如果登录
   if (token) {
     if (to.path === '/login') {
