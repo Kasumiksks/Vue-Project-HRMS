@@ -25,11 +25,15 @@
 
 <script>
 import { getEmployeeSList } from '@/api/employees' // 导入获取简单员工列表的函数
-import { addDepartments } from '@/api/departments.js' // 导入添加的函数
+import { addDepartments, getDepartDetail, updateDepartments } from '@/api/departments' // 导入: 添加的函数, 获取详细信息的函数
 export default {
   props: {
     id: {
       type: String,
+      required: true
+    },
+    isEdit: {
+      type: Boolean,
       required: true
     }
   },
@@ -46,6 +50,7 @@ export default {
   },
   created() {
     this.getEmployeeSInfo()
+    this.loadDetails()
   },
   methods: {
     // 获取员工列表的函数
@@ -64,9 +69,30 @@ export default {
       this.$message.success(res.message)
       this.$emit('success')
     },
+    // 获取当前部门的详情
+    async loadDetails() {
+      if (this.isEdit) { // true, 编辑
+        const res = await getDepartDetail(this.id)
+        console.log(res)
+        this.form = res.data // form是双向绑定, 所以直接赋值进行回填
+      }
+    },
+    // 编辑的函数
+    async doEdit() {
+      try {
+        const res = await updateDepartments({ id: this.id, ...this.form })
+        console.log(res)
+        this.$message.success('修改成功')
+        this.$emit('success')
+      } catch (error) {
+        this.$message.error('修改失败')
+        console.log(error)
+      }
+    },
     // 确定
     hSubmit() {
-      this.doAdd()
+      // 待完成: 表单校验
+      this.isEdit ? this.doEdit() : this.doAdd()
     },
     // 取消
     hCancel() {}

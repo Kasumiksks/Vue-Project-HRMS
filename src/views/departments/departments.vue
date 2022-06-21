@@ -58,7 +58,7 @@
                       <!-- 下拉菜单 -->
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="hAdd(data.id)">添加子部门</el-dropdown-item>
-                        <el-dropdown-item>编辑部门</el-dropdown-item>
+                        <el-dropdown-item @click.native="hEdit(data.id)">编辑部门</el-dropdown-item>
                         <el-dropdown-item>删除部门</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
@@ -73,12 +73,12 @@
       <!-- 实现新增子部门或编辑部门 -->
       <!-- 关闭点击遮罩和按esc关闭对话框的功能 -->
       <el-dialog
-        title="添加/编辑"
+        :title=" isEdit ? '编辑部门信息' : '添加部门信息'"
         :visible.sync="bool"
         :close-on-click-modal="false"
         :close-on-press-escape="false"
       >
-        <addor-edit :id="currentID" @success="hSuccess" />
+        <addor-edit :id="currentID" ref="deptDialog" :is-edit="isEdit" @success="hSuccess" />
       </el-dialog>
     </div>
   </div>
@@ -98,7 +98,8 @@ export default {
       // 依赖一份树形数据
       list: [],
       bool: false,
-      currentID: null
+      currentID: null,
+      isEdit: false // false表示添加部门, true表示编辑部门
     }
   },
   created() {
@@ -123,6 +124,7 @@ export default {
     hAdd(id) {
       this.bool = true
       this.currentID = id
+      this.isEdit = false
     },
     // 接受子组件发送过来的添加成功信息
     hSuccess() {
@@ -130,6 +132,22 @@ export default {
       this.bool = false
       // 重新请求数据
       this.loadDepartments()
+    },
+    // 点击编辑
+    hEdit(id) {
+      this.bool = true
+      this.currentID = id
+      this.isEdit = true
+
+      // 每次打开弹层时，找到子组件，要求它去发请求获取详情
+      // 获取子组件的引用
+      this.$nextTick(() => {
+        console.log('获取子组件的引用', this.$refs.deptDialog)
+        console.log('当前的curId', id)
+        console.log('获取到子组件中的id--从父传入的', this.$refs.deptDialog.id)
+        // 调用子组件的方法
+        this.$refs.deptDialog.loadDetails()
+      })
     }
   }
 }
