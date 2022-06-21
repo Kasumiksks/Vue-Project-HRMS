@@ -131,9 +131,9 @@ export function tranListToTreeList(list) {
   list.forEach(item => {
     // 1. 找关系, 找出正级的对象,如果找到父级对象,将item添加到父级对象的children中
     // 2. 判断是否是字迹判断对象
-    if (item.pid) {
-      // 子级数据对象, 0C150B46.png数据加入到父级对象parent的children中
-      const parent = obj[item.pid]
+    const parent = obj[item.pid]
+    if (parent) {
+      // 子级数据对象, 加入到父级对象parent的children中
       parent.children.push(item)
     } else {
       // 一级的数据对象 , 直接加入到treeList中
