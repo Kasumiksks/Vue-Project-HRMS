@@ -18,7 +18,7 @@
                     操作<i class="el-icon-arrow-down" />
                   </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>添加子部门</el-dropdown-item>
+                    <el-dropdown-item @click.native="hAdd('')">添加子部门</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </el-col>
@@ -59,7 +59,7 @@
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="hAdd(data.id)">添加子部门</el-dropdown-item>
                         <el-dropdown-item @click.native="hEdit(data.id)">编辑部门</el-dropdown-item>
-                        <el-dropdown-item>删除部门</el-dropdown-item>
+                        <el-dropdown-item v-if="data.children.length===0" @click.native="hDel(data.id)">删除部门</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
                   </el-col>
@@ -78,14 +78,14 @@
         :close-on-click-modal="false"
         :close-on-press-escape="false"
       >
-        <addor-edit :id="currentID" ref="deptDialog" :is-edit="isEdit" @success="hSuccess" />
+        <addor-edit :id="currentID" ref="deptDialog" :is-edit="isEdit" @success="hSuccess" @closeDialog="hClose" />
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import { getDepartments } from '@/api/departments'
+import { getDepartments, delDepartment } from '@/api/departments'
 import { tranListToTreeList } from '@/utils'
 import AddorEdit from './deptDialog.vue'
 export default {
@@ -142,12 +142,31 @@ export default {
       // 每次打开弹层时，找到子组件，要求它去发请求获取详情
       // 获取子组件的引用
       this.$nextTick(() => {
-        console.log('获取子组件的引用', this.$refs.deptDialog)
-        console.log('当前的curId', id)
-        console.log('获取到子组件中的id--从父传入的', this.$refs.deptDialog.id)
+        // console.log('获取子组件的引用', this.$refs.deptDialog)
+        // console.log('当前的curId', id)
+        // console.log('获取到子组件中的id--从父传入的', this.$refs.deptDialog.id)
         // 调用子组件的方法
         this.$refs.deptDialog.loadDetails()
       })
+    },
+    // 点击删除
+    hDel(id) {
+      this.$confirm('确认删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        const res = await delDepartment(id)
+        this.$message.success(res.message)
+        // 重新渲染页面
+        this.loadDepartments()
+      }).catch((error) => {
+        this.$message.error(error)
+      })
+    },
+    // 点击关闭对话框
+    hClose() {
+      this.bool = false
     }
   }
 }

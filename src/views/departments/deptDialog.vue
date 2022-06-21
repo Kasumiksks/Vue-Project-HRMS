@@ -27,7 +27,7 @@
 import { getEmployeeSList } from '@/api/employees' // 导入获取简单员工列表的函数
 import { addDepartments, getDepartDetail, updateDepartments } from '@/api/departments' // 导入: 添加的函数, 获取详细信息的函数
 export default {
-  props: {
+  props: { // props是异步的
     id: {
       type: String,
       required: true
@@ -95,7 +95,9 @@ export default {
       this.isEdit ? this.doEdit() : this.doAdd()
     },
     // 取消
-    hCancel() {}
+    hCancel() {
+      this.$emit('closeDialog')
+    }
   }
 }
 </script>

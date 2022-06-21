@@ -55,3 +55,15 @@ export function updateDepartments(data) {
     data
   })
 }
+
+/**
+ * @description: 删除部门
+ * @param {*} id 当前点击的操作按钮 所在的项的id
+ * @return {*}
+ */
+export function delDepartment(id) {
+  return request({
+    url: `/company/department/${id}`,
+    method: 'delete'
+  })
+}
