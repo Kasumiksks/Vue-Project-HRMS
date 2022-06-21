@@ -78,7 +78,7 @@
         :close-on-click-modal="false"
         :close-on-press-escape="false"
       >
-        <addor-edit :id="currentID" ref="deptDialog" :is-edit="isEdit" @success="hSuccess" @closeDialog="hClose" />
+        <addor-edit :id="currentID" ref="deptDialog" :is-edit="isEdit" :origin-list="originList" @success="hSuccess" @closeDialog="hClose" />
       </el-dialog>
     </div>
   </div>
@@ -99,7 +99,8 @@ export default {
       list: [],
       bool: false,
       currentID: null,
-      isEdit: false // false表示添加部门, true表示编辑部门
+      isEdit: false, // false表示添加部门, true表示编辑部门
+      originList: []
     }
   },
   created() {
@@ -114,6 +115,13 @@ export default {
         // const company = res.data.depts.shift()
         // console.log(company, 'company')
         res.data.depts.shift()
+
+        // this.originList = res.data.depts.map(item => {
+        //   const { id, pid, name, code } = item
+        //   return { id: id, pid: pid, name: name, code: code }
+        // })  结构简写:
+        this.originList = res.data.depts.map(({ id, pid, name, code }) => ({ id, pid, name, code }))
+
         // 将平铺的数据转化为树形结构的数据
         this.list = tranListToTreeList(res.data.depts)
       } catch (error) {
