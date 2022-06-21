@@ -77,6 +77,7 @@
         :visible.sync="bool"
         :close-on-click-modal="false"
         :close-on-press-escape="false"
+        @closed="resetClose"
       >
         <addor-edit :id="currentID" ref="deptDialog" :is-edit="isEdit" :origin-list="originList" @success="hSuccess" @closeDialog="hClose" />
       </el-dialog>
@@ -175,6 +176,10 @@ export default {
     // 点击关闭对话框
     hClose() {
       this.bool = false
+    },
+    // 清空表单
+    resetClose() {
+      this.$refs.deptDialog.resetForm()
     }
   }
 }

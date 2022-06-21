@@ -116,8 +116,6 @@ export default {
       if (res.code !== 10000) return this.$message.error(res.message)
       this.$message.success(res.message)
       this.$emit('success')
-      // 添加完成, 清空表单
-      this.$refs.deptForm.resetFields()
     },
     // 获取当前部门的详情
     async loadDetails() {
@@ -150,6 +148,10 @@ export default {
     // 取消
     hCancel() {
       this.$emit('closeDialog')
+    },
+    // 清空表单
+    resetForm() {
+      this.$refs.deptForm.resetFields()
     }
   }
 }
