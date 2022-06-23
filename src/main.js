@@ -31,9 +31,9 @@ import '@/permission' // permission control(路由守卫)
 //   }
 // }
 
-// // 方法三: 注册自己的组件
-// import myUI from '@/components/index'
-// Vue.use(myUI)
+// 方法三: 注册自己的组件
+import myUI from '@/components/index'
+Vue.use(myUI)
 
 /* mock相关
 if (process.env.NODE_ENV === 'production') {
