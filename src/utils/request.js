@@ -32,7 +32,7 @@ service.interceptors.response.use(function(response) {
 },
 function(error) {
   // 10002: 后端约定的token失效状态码
-  if (error.response.status === 401 && error.response.data.code === 10002) {
+  if (error.response.data.code === 10002) {
     // token失效, 跳转到登录页 ,清空token和用户信息
     store.dispatch('user/logout')
     // router.currentRoute: 在js文件中获取当前的组件对象

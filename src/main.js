@@ -16,6 +16,25 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control(路由守卫)
 
+// // 全局导入公共组件
+// import PageTools from '@/components/PageTools'
+// // //方法一: 注册组件
+// // Vue.component('PageTools', PageTools)
+
+// // 方法二: obj就是插件
+// const obj = {
+//   install(p) {
+//     // p接收的是Vue的构造器
+//     console.log('install.......', p)
+//     console.log('install.......', p === Vue)
+//     p.component('PageTools', PageTools)
+//   }
+// }
+
+// // 方法三: 注册自己的组件
+// import myUI from '@/components/index'
+// Vue.use(myUI)
+
 /* mock相关
 if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
