@@ -3,7 +3,7 @@
     <div class="app-container">
       <Page-tools>
         <template #left>
-          <span>总记录数: 16 条</span>
+          <span>总记录数: {{ total }} 条</span>
         </template>
         <template #right>
           <el-button type="warning" size="small">excel导入</el-button>
@@ -22,16 +22,24 @@
           <el-table-column sortable label="入职时间" prop="timeOfEntry" />
           <!-- <el-table-column label="账户状态" /> -->
           <el-table-column label="操作" width="280">
-            <template>
+            <template #default="{row}">
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">分配角色</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" size="small" @click="hDel(row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
         <!-- 分页组件 -->
         <el-row type="flex" justify="center" align="middle" style="height: 60px">
-          <el-pagination layout="prev, pager, next" />
+          <el-pagination
+            :current-page="pageParams.page"
+            :page-sizes="[2, 3, 5, 10]"
+            :page-size="pageParams.size"
+            layout="total,sizes,prev,pager,next,jumper"
+            :total="total"
+            @current-change="hCurrentChange"
+            @size-change="handleSizeChange"
+          />
         </el-row>
       </el-card>
     </div>
@@ -39,7 +47,7 @@
 </template>
 
 <script>
-import { getEmployeesList } from '@/api/employees'
+import { getEmployeesList, delEmployee } from '@/api/employees'
 export default {
   name: 'Employees',
   data() {
@@ -65,6 +73,46 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    // 点击删除
+    hDel(id) {
+      this.$confirm('删除操作不可逆,是否继续?', '提示', {
+        confirmButtonText: '继续',
+        cancelButtonText: '我再想想',
+        type: 'warning'
+      }).then(() => {
+        this.doDel(id)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    // 删除员工
+    async doDel(id) {
+      try {
+        const res = await delEmployee(id)
+        // 如果删除第最后一页（例如4）的最一条数据之后，页面会显示不正常
+        if (this.employeesList.length === 1) {
+          this.pageParams.page--
+          if (this.pageParams.page <= 0) {
+            this.pageParams.page = 1
+          }
+        }
+        this.$message.success(res.message)
+        this.loadEmployeesList()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    hCurrentChange(val) {
+      // 控制页码数值的变化
+      this.pageParams.page = val
+      this.loadEmployeesList()
+    },
+    handleSizeChange(val) {
+      // 控制每页的条数
+      this.pageParams.page = 1
+      this.pageParams.size = val
+      this.loadEmployeesList()
     }
   }
 
