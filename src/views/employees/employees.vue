@@ -8,7 +8,7 @@
         <template #right>
           <el-button type="warning" size="small">excel导入</el-button>
           <el-button type="danger" size="small">excel导出</el-button>
-          <el-button type="primary" size="small">新增员工</el-button>
+          <el-button type="primary" size="small" @click="showDialog = true">新增员工</el-button>
         </template>
       </Page-tools>
 
@@ -24,7 +24,7 @@
           </el-table-column>
           <el-table-column label="部门" prop="departmentName" />
           <el-table-column sortable label="入职时间" prop="timeOfEntry" />
-          <!-- <el-table-column label="账户状态" /> -->
+          <el-table-column label="账户状态" />
           <el-table-column label="操作" width="280">
             <template #default="{row}">
               <el-button type="text" size="small">查看</el-button>
@@ -46,11 +46,16 @@
           />
         </el-row>
       </el-card>
+
+      <el-dialog title="新增员工" :visible.sync="showDialog">
+        <AddorEdit v-if="showDialog" @close="showDialog=false" @addSuccess="hAddSuccess" />
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
+import AddorEdit from './empDialog' // 导入对话框子组件
 import { getEmployeesList, delEmployee } from '@/api/employees'
 import EmployeesEnum from '@/constant/employees'
 // const hireType = {}
@@ -59,9 +64,11 @@ const hireType = EmployeesEnum.hireType.reduce((acc, item) => {
   acc[item.id] = item.value
   return acc
 }, {})
-console.log(hireType)
 export default {
   name: 'Employees',
+  components: {
+    AddorEdit
+  },
   data() {
     return {
       pageParams: {
@@ -69,7 +76,8 @@ export default {
         size: 5 // 每页条数
       },
       employeesList: [], // 员工列表
-      total: 0
+      total: 0,
+      showDialog: false // 对话框显示/隐藏
     }
   },
   created() {
@@ -95,7 +103,6 @@ export default {
       // } else {
       //   return '未知'
       // }
-      console.log(hireType[id])
       return hireType[id]
     },
     // 点击删除
@@ -126,6 +133,15 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    // 添加成功刷新页面
+    hAddSuccess() {
+      // 添加成功，进入最后一页看数据
+      this.total++
+      // 最后一页
+      this.pageParams.page = Math.ceil(this.total / this.pageParams.size)
+      this.showDialog = false
+      this.loadEmployeesList()
     },
     hCurrentChange(val) {
       // 控制页码数值的变化
