@@ -164,12 +164,14 @@ export default {
         console.log(res)
         this.$message.success(res.message)
 
-        // 将当前页码的值, 改为最后一页的值
-        this.pageParams.page = this.maxNum
-        if (this.isLastPageFulled) {
-          this.pageParams.page++
-          this.total++
-        }
+        // // 将当前页码的值, 改为最后一页的值
+        // this.pageParams.page = this.maxNum
+        // if (this.isLastPageFulled) {
+        //   this.pageParams.page++
+        //   this.total++
+        // }
+        this.total++
+        this.pageParams.page = Math.ceil(this.total / this.pageParams.pagesize)
 
         this.loadRoleList()
       } catch (error) {

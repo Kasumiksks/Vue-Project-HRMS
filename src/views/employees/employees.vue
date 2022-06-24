@@ -17,7 +17,11 @@
           <el-table-column label="序号" type="index" />
           <el-table-column label="姓名" prop="username" />
           <el-table-column sortable label="工号" prop="workNumber" />
-          <el-table-column label="聘用形式" prop="formOfEmployment" />
+          <el-table-column label="聘用形式" prop="formOfEmployment">
+            <template #default="{row}">
+              {{ formOfEmploymentFormat(row.formOfEmployment) }}
+            </template>
+          </el-table-column>
           <el-table-column label="部门" prop="departmentName" />
           <el-table-column sortable label="入职时间" prop="timeOfEntry" />
           <!-- <el-table-column label="账户状态" /> -->
@@ -48,6 +52,14 @@
 
 <script>
 import { getEmployeesList, delEmployee } from '@/api/employees'
+import EmployeesEnum from '@/constant/employees'
+// const hireType = {}
+// EmployeesEnum.hireType.forEach(item => hireType[item.id] === item.value)
+const hireType = EmployeesEnum.hireType.reduce((acc, item) => {
+  acc[item.id] = item.value
+  return acc
+}, {})
+console.log(hireType)
 export default {
   name: 'Employees',
   data() {
@@ -73,6 +85,18 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    // 格式化聘用形式
+    formOfEmploymentFormat(id) {
+      // id:1,正式; 2:不正式
+      // const item = EmployeesEnum.hireType.find(item => item.id === id)
+      // if (item) {
+      //   return item.value
+      // } else {
+      //   return '未知'
+      // }
+      console.log(hireType[id])
+      return hireType[id]
     },
     // 点击删除
     hDel(id) {
