@@ -39,6 +39,17 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
+  { // 导入Excel文件的路由
+    path: '/import',
+    component: Layout,
+    hidden: true,
+    children: [{
+      path: '',
+      name: 'import',
+      component: () => import('@/views/import/index.vue')
+    }]
+
+  },
 
   {
     path: '/',
