@@ -7,7 +7,7 @@
         </template>
         <template #right>
           <el-button type="warning" size="small" @click="$router.push('import')">excel导入</el-button>
-          <el-button type="danger" size="small">excel导出</el-button>
+          <el-button type="danger" size="small" @click="hExcelExport">excel导出</el-button>
           <el-button type="primary" size="small" @click="showDialog = true">新增员工</el-button>
         </template>
       </Page-tools>
@@ -153,6 +153,68 @@ export default {
       this.pageParams.page = 1
       this.pageParams.size = val
       this.loadEmployeesList()
+    },
+    // 导出Excel文件
+    async hExcelExport() {
+      // 1. 发送请求, 拿到真实的数据
+      try {
+        const res = await getEmployeesList(this.pageParams)
+        const list = res.data.rows
+        // 2. 调用函数格式化拿到的数据
+        const { header, data } = this.formatData(list)
+        // console.log(header, 'header')
+        // console.log(data, 'data')
+
+        // 3. 将格式化之后的数据转化为Excel表格
+        import('@/vendor/Export2Excel').then(async excel => {
+          excel.export_json_to_excel({
+            header: header, // 表头 必填
+            data: data, // 具体数据 必填
+            filename: '员工管理表', // 文件名称
+            autoWidth: true, // 宽度是否自适应
+            bookType: 'xlsx' // 生成的文件类型
+          })
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    // 导出数据的格式化函数
+    formatData(list) {
+      const mapInfo = {
+        'id': '编号',
+        'password': '密码',
+        'mobile': '手机号',
+        'username': '姓名',
+        'timeOfEntry': '入职日期',
+        'formOfEmployment': '聘用形式',
+        'correctionTime': '转正日期',
+        'workNumber': '工号',
+        'departmentName': '部门',
+        'staffPhoto': '头像地址'
+      }
+      // 首先成header
+      // 存储表头
+      let header = []
+      // 存储表的数据
+      let data = []
+      // 找到一个元素
+      const one = list[0]
+      if (!one) {
+        return { header, data }
+      }
+      console.log(Object.keys(one))
+      // 转换表头格式
+      header = Object.keys(one).map(enKey => {
+        return mapInfo[enKey]
+      })
+      // 转换表单内容格式
+      data = list.map(obj => {
+        obj['formOfEmployment'] = hireType[obj['formOfEmployment']] || '未知'
+        return Object.values(obj)
+      })
+      return { header, data }
     }
   }
 
