@@ -6,8 +6,8 @@
       @toggleClick="toggleSideBar"
     />
     <div class="app-breadcrumb">
-      莱莎的炼金工坊
-      <span class="breadBtn">失落妖精版</span>
+      没啥用科技有限公司
+      <span class="breadBtn">beta测试版</span>
     </div>
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 

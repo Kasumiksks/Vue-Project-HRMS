@@ -11,6 +11,12 @@ export default { // 员工管理
       component: () => import('@/views/employees/employees.vue'),
       // 路由元信息 , 其实就是存储数据的对象, 我们可以在这里放置一些信息
       meta: { title: '员工管理', icon: 'employees' }
+    },
+    { // 查看员工详情子路由
+      path: 'detail',
+      component: () => import('@/views/employees/detail'),
+      name: 'employeesDetail',
+      hidden: true
     }
   ]
 }

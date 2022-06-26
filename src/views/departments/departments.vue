@@ -5,7 +5,7 @@
         <!-- 用一个行列布局 -->
         <el-row type="flex" justify="space-between" align="middle" style="height: 40px">
           <el-col :span="20">
-            <svg-icon icon-class="bumen" /><span>莱莎的炼金工坊</span>
+            <svg-icon icon-class="bumen" /><span>没啥用科技有限公司</span>
           </el-col>
           <el-col :span="4">
             <el-row type="flex" justify="end">
