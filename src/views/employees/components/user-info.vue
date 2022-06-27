@@ -24,6 +24,7 @@
 
         <el-form-item label="员工头像">
           <!-- 放置上传图片 -->
+          <UploadImg v-model="userInfo.staffPhoto" />
           <img>
         </el-form-item>
 
