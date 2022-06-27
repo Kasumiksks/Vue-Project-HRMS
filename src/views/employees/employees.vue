@@ -28,7 +28,7 @@
           <el-table-column label="操作" width="280">
             <template #default="{row}">
               <el-button type="text" size="small" @click="$router.push(`/employees/detail?id=${row.id}`)">查看</el-button>
-              <el-button type="text" size="small">分配角色</el-button>
+              <el-button type="text" size="small" @click="hAssignRole(row.id)">分配角色</el-button>
               <el-button type="text" size="small" @click="hDel(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -47,8 +47,14 @@
         </el-row>
       </el-card>
 
+      <!-- 新增员工的弹层 -->
       <el-dialog title="新增员工" :visible.sync="showDialog">
         <AddorEdit v-if="showDialog" @close="showDialog=false" @addSuccess="hAddSuccess" />
+      </el-dialog>
+
+      <!-- 分配角色的弹层 -->
+      <el-dialog title="分配角色" :visible.sync="showDialogRole">
+        <AssignRole @close="showDialogRole=false" />
       </el-dialog>
     </div>
   </div>
@@ -56,6 +62,7 @@
 
 <script>
 import AddorEdit from './empDialog' // 导入对话框子组件
+import AssignRole from './assignRole' // 导入分配角色子组件
 import { getEmployeesList, delEmployee } from '@/api/employees'
 import EmployeesEnum from '@/constant/employees'
 // const hireType = {}
@@ -67,7 +74,8 @@ const hireType = EmployeesEnum.hireType.reduce((acc, item) => {
 export default {
   name: 'Employees',
   components: {
-    AddorEdit
+    AddorEdit,
+    AssignRole
   },
   data() {
     return {
@@ -77,7 +85,8 @@ export default {
       },
       employeesList: [], // 员工列表
       total: 0,
-      showDialog: false // 对话框显示/隐藏
+      showDialog: false, // 对话框显示/隐藏
+      showDialogRole: false // 分配角色对话框显示/隐藏
     }
   },
   created() {
@@ -215,6 +224,11 @@ export default {
         return Object.values(obj)
       })
       return { header, data }
+    },
+    // 点击分配角色
+    hAssignRole(id) {
+      console.log(id)
+      this.showDialogRole = true
     }
   }
 
