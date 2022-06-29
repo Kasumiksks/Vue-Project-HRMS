@@ -54,7 +54,7 @@
 
       <!-- 分配角色的弹层 -->
       <el-dialog title="分配角色" :visible.sync="showDialogRole">
-        <AssignRole @close="showDialogRole=false" />
+        <AssignRole :id="currentID" ref="assignRole" @close="showDialogRole=false" />
       </el-dialog>
     </div>
   </div>
@@ -86,7 +86,8 @@ export default {
       employeesList: [], // 员工列表
       total: 0,
       showDialog: false, // 对话框显示/隐藏
-      showDialogRole: false // 分配角色对话框显示/隐藏
+      showDialogRole: false, // 分配角色对话框显示/隐藏
+      currentID: '' // 当前id
     }
   },
   created() {
@@ -227,8 +228,16 @@ export default {
     },
     // 点击分配角色
     hAssignRole(id) {
-      console.log(id)
+      // console.log(id)
       this.showDialogRole = true
+      this.currentID = id // 点击分配角色赋值
+
+      // this.$nextTick
+      // 直接找到子组件，调用方法去获取最新的数据
+      this.$nextTick(() => {
+        this.$refs.assignRole.loadRolesList()
+        // console.log('子组件中的props', this.$refs.assignRole.employeeId)
+      })
     }
   }
 

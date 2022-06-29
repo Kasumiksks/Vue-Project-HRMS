@@ -24,7 +24,7 @@
       <!-- 弹层 -->
       <el-dialog :visible.sync="showDialog" :title="isEdit?'编辑权限':'添加权限'" @closed="hClose">
         <!-- 表单内容 -->
-        <el-form ref="dialogForm" label-width="100px">
+        <el-form ref="dialogForm" label-width="100px" :rules="rules">
           <el-form-item label="权限名称">
             <el-input v-model="formData.name" />
           </el-form-item>
@@ -75,6 +75,22 @@ export default {
         enVisible: '0', // 开启
         pid: '', // 添加到哪个节点下
         type: '' // 类型
+      },
+      rules: {
+        name: [
+          { required: true, message: '名称不能为空', trigger: 'blur' },
+          { min: 1, max: 50, message: '名称要求1-50个字符', trigger: 'blur' }
+          // { validator: checkName, trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '权限标识不能为空', trigger: 'blur' },
+          { min: 1, max: 50, message: '权限标识要求1-50个字符', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '描述不能为空', trigger: 'blur' },
+          { min: 1, max: 50, message: '描述要求1-50个字符', trigger: 'blur' }
+        ]
+
       }
     }
   },
