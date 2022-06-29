@@ -60,8 +60,8 @@
       >登录</el-button>
 
       <div class="tips">
-        <span style="margin-right: 20px">账号: 17701216517</span>
-        <span> 密码: 20000526</span>
+        <span style="margin-right: 20px">账号: 13800000002</span>
+        <span> 密码: 123456</span>
       </div>
     </el-form>
   </div>

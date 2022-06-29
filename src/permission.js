@@ -21,13 +21,31 @@ router.beforeEach(async(to, from, next) => {
       NProgress.done() // 进度条结束
     } else {
       if (!store.getters.userId) { // 如果没有userId, 才需要重新请求用户信息
-        await store.dispatch('user/getUserInfo')
+        const menuList = await store.dispatch('user/getUserInfo')
+        console.log(menuList)
 
         // 根据获得的用户信息里的权限实现动态路由
         // 动态添加所有的动态路由
-        router.addRoutes(asyncRoutes)
+        console.log(asyncRoutes)
+        // 根据用户的信息实现过滤,拿到过滤之后的结果
+        const filterRouters = asyncRoutes.filter(item => {
+          const routeName = item.children[0].name
+          return menuList.includes(routeName)
+        })
+
+        // 动态处理404路由,让它位于动态路由之后
+        filterRouters.push({ path: '*', redirect: '/404', hidden: 'true' })
+
+        router.addRoutes(filterRouters)
         // 将路由列表存储到vuex中实现左侧边栏菜单渲染
-        store.commit('menu/setMenuList', asyncRoutes)
+        store.commit('menu/setMenuList', filterRouters)
+
+        // 路由守卫是异步的,动态添加路由会产生一个bug, 包括vuex中数据的渲染,没有完成就直接跳转页面了
+        // 解决刷新出现的白屏bug
+        next({
+          ...to, // next({ ...to })的目的,是保证路由添加完了再进入页面 (可以理解为重进一次)
+          replace: true // 重进一次, 不保留重复历史
+        })
       }
       next()
     }

@@ -9,7 +9,7 @@ export default {
     // 添加动态的路由
     setMenuList(state, asyncRoutes) {
       // 存储了静态和动态的路由
-      state.menuList = [...asyncRoutes, ...constantRoutes]
+      state.menuList = [...constantRoutes, ...asyncRoutes]
     }
   }
 }
