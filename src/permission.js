@@ -1,4 +1,4 @@
-import router from './router'
+import router, { asyncRoutes } from './router'
 import store from '@/store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // 进度条
@@ -22,6 +22,12 @@ router.beforeEach(async(to, from, next) => {
     } else {
       if (!store.getters.userId) { // 如果没有userId, 才需要重新请求用户信息
         await store.dispatch('user/getUserInfo')
+
+        // 根据获得的用户信息里的权限实现动态路由
+        // 动态添加所有的动态路由
+        router.addRoutes(asyncRoutes)
+        // 将路由列表存储到vuex中实现左侧边栏菜单渲染
+        store.commit('menu/setMenuList', asyncRoutes)
       }
       next()
     }

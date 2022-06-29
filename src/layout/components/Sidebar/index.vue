@@ -32,7 +32,9 @@ export default {
       'sidebar'
     ]),
     routes() {
-      return this.$router.options.routes // 可以拿到完整的路由表数据(所有的路由规则对象的数组)
+      // return this.$router.options.routes // 可以拿到完整的路由表数据(所有的路由规则对象的数组)
+      // 获取路由列表渲染
+      return this.$store.state.menu.menuList
     },
     activeMenu() {
       const route = this.$route

@@ -70,7 +70,7 @@ export const constantRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRoutes] // 利用展开运算符合并静态和动态路由规则
+  routes: [...constantRoutes] // 利用展开运算符合并静态和动态路由规则
 })
 
 const router = createRouter()
