@@ -22,7 +22,7 @@
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
                 <template #default="{row}">
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button size="small" type="success" @click="hAssign(row.id)">分配权限</el-button>
                   <el-button size="small" type="primary" @click="hEdit(row)">编辑</el-button>
                   <el-button size="small" type="danger" @click="del(row.id)">删除</el-button>
                 </template>
@@ -71,14 +71,27 @@
       </el-dialog>
     </div>
 
+    <!-- 分配权限的弹层 -->
+    <el-dialog
+      title="分配权限(一级为路由页面查看权限-二级为按钮操作权限)"
+      :visible.sync="showDialogAssign"
+    >
+      <AssignPermission ref="refTree" :cur-id="curId" @close="showDialogAssign=false" />
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { getRoles, deleteRole, addRole, updateRole } from '@/api/setting'
+import AssignPermission from './assignPermission'
 export default {
+  components: {
+    AssignPermission
+  },
   data() {
     return {
+      curId: '',
       isEdit: false, // false:新增, true:编辑
       pageParams: {
         page: 1, // 页码值
@@ -87,6 +100,7 @@ export default {
       roleList: [], // 角色列表
       total: 0, // 总的条数
       showDialog: false, // 对话框是否关闭
+      showDialogAssign: false, // 分配权限的对话框
       roleForm: {
         name: '',
         description: ''
@@ -213,6 +227,15 @@ export default {
         description: ''
       }
       this.$refs.roleForm.resetFields()
+    },
+    // 点击分配权限
+    hAssign(id) {
+      this.showDialogAssign = true
+      this.curId = id
+      // 3. 手动调用子组件的loadPermissionByRoleId， 去根据最新的roleId获取权限信息
+      this.$nextTick(() => {
+        this.$refs.refTree.loadRoleDetails()
+      })
     }
   }
 }
