@@ -14,7 +14,8 @@ export default { // 员工管理
     },
     { // 查看员工详情子路由
       path: 'detail',
-      component: () => import('@/views/employees/detail'),
+      // 打包之后的名字:employee
+      component: () => import(/* webpackChunkName:"employee"*/ '@/views/employees/detail'),
       name: 'employeesDetail',
       hidden: true
     }

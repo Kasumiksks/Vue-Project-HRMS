@@ -59,6 +59,17 @@ module.exports = { // vue-cli 脚手架相关配置
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
+    externals: {
+      /**
+       * externals 对象属性解析。
+       *  基本格式：
+       *     '包名' : '在项目中引入的名字'
+       *
+     */
+      'vue': 'Vue',
+      'element-ui': 'ElementUI',
+      'xlsx': 'XLSX'
+    },
     resolve: {
       alias: {
         '@': resolve('src')
@@ -66,6 +77,11 @@ module.exports = { // vue-cli 脚手架相关配置
     }
   },
   chainWebpack(config) { // webpack{函数配置}
+    // 去掉控制台的console.log()打印信息
+    config.optimization.minimizer('terser').tap((args) => {
+      args[0].terserOptions.compress.drop_console = true
+      return args
+    })
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [
       {
