@@ -6,12 +6,16 @@
       @toggleClick="toggleSideBar"
     />
     <div class="app-breadcrumb">
-      没啥用科技有限公司
-      <span class="breadBtn">beta测试版</span>
+      没啥用科技股份有限公司
+      <span class="breadBtn">测试版</span>
     </div>
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
+      <!-- 多语言切换 -->
+      <Lang class="right-menu-item" />
+      <!-- 全屏 -->
+      <ScreenFull class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-if="staffPhoto" :src="staffPhoto" class="user-avatar">
@@ -131,7 +135,7 @@ export default {
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: text-bottom;
+      vertical-align: middle;
 
       &.hover-effect {
         cursor: pointer;

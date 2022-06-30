@@ -6,9 +6,15 @@
           <span>总记录数: {{ total }} 条</span>
         </template>
         <template #right>
-          <el-button type="warning" size="small" @click="$router.push('import')">excel导入</el-button>
-          <el-button type="danger" size="small" @click="hExcelExport">excel导出</el-button>
-          <el-button type="primary" size="small" @click="showDialog = true">新增员工</el-button>
+          <el-button
+            v-allow="
+              'import_excel'"
+            type="warning"
+            size="small"
+            @click="$router.push('import')"
+          >excel导入</el-button>
+          <el-button v-allow="'export_excel'" type="danger" size="small" @click="hExcelExport">excel导出</el-button>
+          <el-button v-allow="'add_employees'" type="primary" size="small" @click="showDialog = true">新增员工</el-button>
         </template>
       </Page-tools>
 

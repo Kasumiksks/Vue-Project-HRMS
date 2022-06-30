@@ -35,11 +35,22 @@ import '@/permission' // permission control(路由守卫)
 import myUI from '@/components/index'
 Vue.use(myUI)
 
-/* mock相关
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-} */
+// 注册自定义指令
+Vue.directive('allow', {
+  inserted(el, binding) {
+    // console.log(el, '当前绑定的DOM元素')
+    // console.log(binding, '当前绑定的DOM元素的相关信息')
+    // 1. 获取用户的权限信息
+    const points = store.state.user.userInfo.roles.points
+
+    if (!points.includes(binding.value)) {
+      el.remove()
+    }
+  }
+})
+
+// 导入 i18n
+import i18n from '@/lang'
 
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
@@ -52,5 +63,6 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   render: h => h(App)
 })

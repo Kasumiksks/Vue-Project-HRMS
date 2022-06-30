@@ -1,5 +1,6 @@
 // 引入cookie方法
 import { getInfo, login, getStaffInfo } from '@/api/user'
+import { resetRouter } from '@/router'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 export default {
@@ -61,6 +62,7 @@ export default {
     logout(context) {
       context.commit('removeToken') // 清空token
       context.commit('removeInfo') // 清空用户信息
+      resetRouter() // 清空路由
     }
   }
 }
